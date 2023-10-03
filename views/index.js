@@ -22,6 +22,30 @@ signup.addEventListener('submit', async(e) => {
     catch (error) {
         console.error(error);
         alert("User already exist");
-        // Handle the error gracefully (e.g., show an error message to the user)
     }
 })
+
+
+const login = document.getElementById('login')
+
+login.addEventListener('submit', async(e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('login-email').value;
+    const email = document.getElementById('password').value;
+    
+    const loginData = { 
+        email,
+        password
+    }
+     login.reset();
+     try {
+        const res = await axios.post('http://localhost:3000/user/login', loginData);
+        alert(res.data.message);
+    } 
+    catch (error) {
+        console.error(error);
+        alert(error.response.data.message);
+    
+    }
+})    
