@@ -31,8 +31,8 @@ const login = document.getElementById('login')
 login.addEventListener('submit', async(e) => {
     e.preventDefault();
 
-    const name = document.getElementById('login-email').value;
-    const email = document.getElementById('password').value;
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('password').value;
     
     const loginData = { 
         email,
@@ -42,6 +42,7 @@ login.addEventListener('submit', async(e) => {
      try {
         const res = await axios.post('http://localhost:3000/user/login', loginData);
         alert(res.data.message);
+        localStorage.setItem('token', res.data.token);
     } 
     catch (error) {
         console.error(error);
