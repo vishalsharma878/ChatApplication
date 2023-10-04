@@ -1,6 +1,6 @@
    const token = localStorage.getItem('token');
+   const messageBox = document.getElementById('message-box');
         function addMessage(message, name, currUserName) {
-            const messageBox = document.getElementById('message-box');
             const newMessage = document.createElement('div');
             if(name == currUserName){
                 name = "You"
@@ -28,11 +28,11 @@
          }
         });
 
-        
-    document.addEventListener('DOMContentLoaded', async () => {
+    setInterval(async () => {
 
        const initialMessages = await axios.get('http://localhost:3000/chat/get-chat', {headers: {"Authorization": token}})
+        messageBox.innerHTML = '';
         initialMessages.data.messages.forEach(function(message) {
             addMessage(message.messages, message.name, initialMessages.data.name);
         });
-    })
+    }, 1000)
