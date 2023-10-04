@@ -4,11 +4,21 @@ require('dotenv').config();
 const cors = require('cors')
 const bodyparser = require('body-parser');
 
-const userRoute = require('./routes/user');
 const sequelize = require('./utils/database');
+const User = require('./models/user');
+const Messages = require('./models/chat');
+
+const userRoute = require('./routes/user');
+const chatRoute = require('./routes/chat');
+const chat = require('./models/chat');
+
 app.use(bodyparser.json());
 app.use(cors());
 app.use('/user', userRoute);
+app.use('/chat', chatRoute);
+
+User.hasMany(Messages);
+Messages.belongsTo(User);
 
 sequelize
    .sync()
