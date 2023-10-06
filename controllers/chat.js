@@ -1,4 +1,7 @@
 const Messages = require('../models/chat');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 
 const storeChat = async (req, res) => {
     const chatMessage = req.body;
@@ -17,8 +20,12 @@ const storeChat = async (req, res) => {
 }
 
 const getChat = async (req, res) => {
+    const length = req.params.length;
+    
+    
     try{
-    const messages = await Messages.findAll();
+    const messages = await Messages.findAll({where: {id: {[Op.gt]: length}}});
+    console.log(messages)
     res.json({messages, name: req.user.name});
     }
     catch(err) {

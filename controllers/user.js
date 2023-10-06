@@ -35,7 +35,7 @@ const loginData = async(req, res) => {
     if(!passwordMatch){
        return res.status(401).json({message: "Invalid password, please enter corrrect passsword"})
     }
-    res.status(200).json({ message: 'Login successful', token: generateWebToken(user.id)});
+    res.status(200).json({ message: 'Login successful', token: generateWebToken(user.id), name: user.name});
  }
  catch(err){
     res.status(500).json({message: "Somthing went wrong"})

@@ -43,7 +43,9 @@ login.addEventListener('submit', async(e) => {
         const res = await axios.post('http://localhost:3000/user/login', loginData);
         alert(res.data.message);
         localStorage.setItem('token', res.data.token);
-        window.location.href ='/views/chat.html';
+        console.log(res.data.name);
+        localStorage.setItem('name', res.data.name);
+       window.location.href ='/views/chat.html';
     } 
     catch (error) {
         console.error(error);
