@@ -3,23 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
+    <title>WhatsApp Chat Interface</title>
     <link rel="stylesheet" href="chat.css">
-    
 </head>
 <body>
     <div class="container">
-        <h1>Chat Application</h1>
+        <div class="sidebar">
+            <!-- List of groups -->
+            <h3 style="margin-left: 10px; ">Your Groups</h3>
 
-        <div class="message-box" id="message-box">
-        
+            <ul id="group-list" class="group-list">
+            
+                <!-- Add more groups as needed -->
+            </ul>
         </div>
-
-        
-        <input type="text" id="message-input" class="message-input" placeholder="Type your message...">
-        <button id="send-button" class="send-button">Send</button>
+        <div class="chat">
+            <!-- Chat header -->
+            <div class="chat-header">
+                Group Chat
+                <button id="add-users">Add Users</button>
+                <button id="create-group">Create Group</button>
+                <input type="text" id="group-name" placeholder="Enter Group Name">
+            </div>
+            <!-- Chat messages -->
+             <div id="chat-block" style="display: none;">
+            <div class="chat-messages" id="message-box">
+                <!-- Messages will be displayed here -->
+                <div class="message received">
+                    <div class="message-content" id="received-messages">Hello!</div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content" id="sent-messages">Hi there!</div>
+                </div>
+                <!-- Add more messages as needed -->
+            </div>
+            <!-- Chat input -->
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type your message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
-    <script src="chat.js"></script>
+	<script src="chat.js"></script>
 </body>
 </html>
