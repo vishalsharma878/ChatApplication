@@ -17,7 +17,7 @@ function openPopup(userData) {
             console.log('Remove user:', user.id);
             const Id = localStorage.getItem('groupId');
             try {
-                const res = await axios.delete(`http://localhost:3000/remove-user/${Id}/${user.id}`, {
+                const res = await axios.delete(`http://13.235.76.75:3000/remove-user/${Id}/${user.id}`, {
                     headers: { "Authorization": token }
                 });
                 userList.removeChild(listItem);
@@ -34,7 +34,7 @@ function openPopup(userData) {
             const Id = localStorage.getItem('groupId');
             try {
                 const res = await axios.put(
-                    `http://localhost:3000/make-user-admin/${Id}/${user.id}`,
+                    `http://13.235.76.75:3000/make-user-admin/${Id}/${user.id}`,
                     {},
                     {
                         headers: {
@@ -68,7 +68,7 @@ function closePopup() {
 document.getElementById('show-group-users').addEventListener('click', async () => {
     const Id = localStorage.getItem('groupId'); // Replace with the actual group ID
     try {
-        const userData = await axios.get(`http://localhost:3000/get-group-users/${Id}`);
+        const userData = await axios.get(`http://13.235.76.75:3000/get-group-users/${Id}`);
         openPopup(userData.data);
     } catch (err) {
         alert(err.response.data.message);

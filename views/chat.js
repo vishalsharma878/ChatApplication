@@ -26,7 +26,7 @@ function addGroups(id, name) {
         localStorage.setItem('groupId', Id);
 
         try {
-            const res = await axios.get(`http://localhost:3000/chat/get-chat/${Id}`, {
+            const res = await axios.get(`http://13.235.76.75:3000/chat/get-chat/${Id}`, {
                 headers: { "Authorization": token }
             });
             console.log(res);
@@ -53,7 +53,7 @@ createGroup.addEventListener('click', async () => {
     };
 
     try {
-        const res = await axios.post('http://localhost:3000/chat/post-group', groupNameObj, { headers: { "Authorization": token } });
+        const res = await axios.post('http://13.235.76.75:3000/chat/post-group', groupNameObj, { headers: { "Authorization": token } });
         // Clear the input field
         const group = res.data.group;
         addGroups(group.id, group.groupname);
@@ -66,7 +66,7 @@ createGroup.addEventListener('click', async () => {
 
 addUsers.addEventListener('click', async () => {
     const Id = localStorage.getItem('groupId');
-    const res = await axios.get(`http://localhost:3000/chat/check-admin/${Id}`, {
+    const res = await axios.get(`http://13.235.76.75:3000/chat/check-admin/${Id}`, {
         headers: { "Authorization": token }
     });
     const isAdmin = res.data.isAdmin;
@@ -90,7 +90,7 @@ addUsers.addEventListener('click', async () => {
 async function sendUserDetailsToBackend(userDetails) {
     try {
         const groupId = localStorage.getItem('groupId'); // Replace with the actual group ID
-        const response = await axios.post('http://localhost:3000/chat/add-user', {
+        const response = await axios.post('http://13.235.76.75:3000/chat/add-user', {
             groupId,
             userDetails,
         }, {
@@ -110,7 +110,7 @@ async function sendUserDetailsToBackend(userDetails) {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
 
-        const res = await axios.get(`http://localhost:3000/chat/get-groups`, { headers: { "Authorization": token } });
+        const res = await axios.get(`http://13.235.76.75:3000/chat/get-groups`, { headers: { "Authorization": token } });
         const groups = res.data.group;
 
         for (const group of groups) {
@@ -153,7 +153,7 @@ document.getElementById('send-button').addEventListener('click', async () => {
 
     try {
         const groupId = localStorage.getItem('groupId');
-        const res = await axios.post('http://localhost:3000/chat/post-chat', { messageObj, groupId }, { headers: { "Authorization": token } });
+        const res = await axios.post('http://13.235.76.75:3000/chat/post-chat', { messageObj, groupId }, { headers: { "Authorization": token } });
         if (messages.trim() !== '') {
             messageInput.value = ''; // Clear the input field
         }
@@ -199,7 +199,7 @@ document.getElementById('send-button').addEventListener('click', async () => {
 async function fetchAndStoreMessages() {
     const Id = localStorage.getItem('groupId');
     try {
-        const res = await axios.get(`http://localhost:3000/chat/get-chat/${Id}`, {
+        const res = await axios.get(`http://13.235.76.75:3000/chat/get-chat/${Id}`, {
             headers: { "Authorization": token }
         });
 

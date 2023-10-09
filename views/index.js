@@ -16,7 +16,7 @@ signup.addEventListener('submit', async(e) => {
     }
      signup.reset();
      try {
-        const res = await axios.post('http://localhost:3000/user/signup', signupData);
+        const res = await axios.post('http://13.235.76.75:3000/user/signup', signupData);
         alert(res.data.message);
     } 
     catch (error) {
@@ -40,7 +40,7 @@ login.addEventListener('submit', async(e) => {
     }
      login.reset();
      try {
-        const res = await axios.post('http://localhost:3000/user/login', loginData);
+        const res = await axios.post('http://13.235.76.75:3000/user/login', loginData);
         alert(res.data.message);
         localStorage.setItem('token', res.data.token);
         console.log(res.data.name);
