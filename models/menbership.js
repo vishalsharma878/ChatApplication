@@ -1,7 +1,10 @@
 const  Sequelize  = require('sequelize');
 const sequelize = require('../utils/database');
 
-const Membership = sequelize.define('Membership', {
+const Membership = sequelize.define('UserGroup', {
+    isAdmin: {
+        type: Sequelize.BOOLEAN
+    }
   
 });
 

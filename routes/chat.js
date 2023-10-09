@@ -14,5 +14,6 @@ router.get('/get-groups', auth.authentication, chatConttoller.getGroups);
 
 router.post('/add-user', auth.authentication, chatConttoller.addUser);
 
+router.get('/check-admin/:id', auth.authentication, chatConttoller.checkAdmin);
 
 module.exports = router

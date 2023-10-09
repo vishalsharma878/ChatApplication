@@ -12,12 +12,14 @@ const Membership = require('./models/menbership');
 
 const userRoute = require('./routes/user');
 const chatRoute = require('./routes/chat');
+const groupRoute = require('./routes/group-users');
 const chat = require('./models/chat');
 
 app.use(bodyparser.json());
 app.use(cors());
 app.use('/user', userRoute);
 app.use('/chat', chatRoute);
+app.use(groupRoute);
 
 User.hasMany(Messages);
 Messages.belongsTo(User);

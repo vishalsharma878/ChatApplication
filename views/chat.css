@@ -63,7 +63,7 @@ body, ul, li {
 .chat-header {
     background-color: #075e54;
     color: white;
-    padding: 10px;
+    padding: 20px;
     font-weight: bold;
 }
 #add-users{
@@ -73,23 +73,37 @@ body, ul, li {
     border: none;
     font-size: 15px;
     cursor: pointer;
+    padding: 5px;
     margin-left: 5px;
     display: none;
 }
 #create-group{
     float: right;
-    background-color: rgb(65, 26, 221);
+    background-color: #075e54;
     border-radius: 3px;
     border: none;
-    font-size: 15px;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
     cursor: pointer;
 }
-#group-name{
+
+#show-group-users{
+    display: none;
     float: right;
-    border: 1px solid #ccc;
+    background-color: #075e54;
     border-radius: 3px;
-    height: 15px;
+    border: none;
+    color: white;
+    font-size: 15px;
+    padding: 5px;
+    cursor: pointer;
 }
+
+#create-group:hover, #show-group-users:hover{
+   background-color: aqua;
+}
+
 .chat-messages {
     height: 400px;
     overflow-y: scroll;
@@ -138,4 +152,51 @@ body, ul, li {
     cursor: pointer;
     margin-left: 10px;
 }
+
+/* Styles for the popup/modal */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the "Remove" and "Make Admin" buttons */
+.user-list-item button {
+    margin-left: 10px;
+    background-color: #128C7E;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    border: none;
+}
+
+.user-list-item{
+    margin: 10px;
+    color: #ffffff;
+    background-color: #1d6e65;
+}
+
+#close-popup{
+    margin-top: 20px;
+    color: #fff;
+    background-color: rgb(221, 28, 28);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+}
+
 
