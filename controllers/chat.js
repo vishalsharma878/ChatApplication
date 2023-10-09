@@ -51,14 +51,14 @@ const storeGroup = async (req, res) => {
 }
 
 const getGroups = (req, res) => {
-    // Assume you have the user's ID
-    const Id = req.user.id; // Replace with the actual user ID you want to query
+
+    const Id = req.user.id; 
 
     // Use the Group model to find all groups associated with the user
     Groups.findAll({
         include: [{
             model: User,
-            where: { id: Id }, // Filter by the user's ID
+            where: { id: Id }, 
             through: Membership, // Include the Membership model to get the associations
         }],
     })
@@ -80,10 +80,9 @@ const addUser = async (req, res) => {
     const { groupId, userDetails } = req.body;
 
     try {
-        // Use Sequelize to retrieve user records based on the provided details
         const users = await User.findAll({
             where: {
-                email: userDetails // Adjust the field (e.g., email) as needed
+                email: userDetails 
             }
         });
 
@@ -91,7 +90,7 @@ const addUser = async (req, res) => {
             return res.status(404).json({ message: 'No matching users found.' });
         }
 
-        // Add the valid user records to the group
+        
         const group = await Groups.findByPk(groupId);
 
         if (!group) {

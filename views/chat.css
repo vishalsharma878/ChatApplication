@@ -25,7 +25,7 @@ body, ul, li {
     list-style-type: none;
     margin-top: 50px;
     padding: 0;
-    width: 100%; /* Adjust the width as needed */
+    width: 100%; 
     border-right: 1px solid #ccc; /* Add a border on the right side */
 }
 
@@ -34,14 +34,13 @@ body, ul, li {
     display: flex;
     align-items: center;
     padding: 14px;
-    border-bottom: 1px solid #ddd; /* Add a border between groups */
+    border-bottom: 1px solid #ddd; 
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
 }
 
 
-/* Add a hover effect when hovering over group items */
 .group-list li:hover {
     background-color: #e5e5e5;
     color: black;
