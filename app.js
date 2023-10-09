@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const fs = require('fs');
 const cors = require('cors')
 const bodyparser = require('body-parser');
+const helmet = require('helmet');
+const morgan = require('morgan');
 
 const sequelize = require('./utils/database');
 const User = require('./models/user');
@@ -15,6 +18,10 @@ const chatRoute = require('./routes/chat');
 const groupRoute = require('./routes/group-users');
 const chat = require('./models/chat');
 
+const accessLogStream = fs.createWriteStream('access.log', {flags: 'a'});
+
+app.use(helmet());
+app.use(morgan('combined', { stream: accessLogStream }));
 app.use(bodyparser.json());
 app.use(cors());
 app.use('/user', userRoute);
