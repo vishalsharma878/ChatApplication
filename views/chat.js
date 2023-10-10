@@ -1,7 +1,5 @@
-
-
 const token = localStorage.getItem('token');
-
+const socket = io('http://13.235.76.75:3000');
 const createGroup = document.getElementById('create-group');
 const groupList = document.getElementById('group-list');
 const messageBox = document.getElementById('message-box');
@@ -51,7 +49,7 @@ createGroup.addEventListener('click', async () => {
     const groupNameObj = {
         groupname
     };
-
+    if(groupname){
     try {
         const res = await axios.post('http://13.235.76.75:3000/chat/post-group', groupNameObj, { headers: { "Authorization": token } });
         // Clear the input field
@@ -62,6 +60,7 @@ createGroup.addEventListener('click', async () => {
     } catch (err) {
         console.log(err);
     }
+ }
 })
 
 addUsers.addEventListener('click', async () => {
@@ -89,7 +88,7 @@ addUsers.addEventListener('click', async () => {
 // Function to send user details to the backend
 async function sendUserDetailsToBackend(userDetails) {
     try {
-        const groupId = localStorage.getItem('groupId'); // Replace with the actual group ID
+        const groupId = localStorage.getItem('groupId'); 
         const response = await axios.post('http://13.235.76.75:3000/chat/add-user', {
             groupId,
             userDetails,
@@ -141,6 +140,7 @@ function addMessage(message, name, currUserName) {
         newMessage.textContent = name + ": " + message;
     }
     messageBox.appendChild(newMessage);
+    newMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
 // Event listener for the Send button
@@ -153,7 +153,9 @@ document.getElementById('send-button').addEventListener('click', async () => {
 
     try {
         const groupId = localStorage.getItem('groupId');
+        
         const res = await axios.post('http://13.235.76.75:3000/chat/post-chat', { messageObj, groupId }, { headers: { "Authorization": token } });
+        socket.emit('chatMessage', messages);
         if (messages.trim() !== '') {
             messageInput.value = ''; // Clear the input field
         }
@@ -198,11 +200,12 @@ document.getElementById('send-button').addEventListener('click', async () => {
 // let id = lastElement.id;
 async function fetchAndStoreMessages() {
     const Id = localStorage.getItem('groupId');
+    
     try {
+        
         const res = await axios.get(`http://13.235.76.75:3000/chat/get-chat/${Id}`, {
             headers: { "Authorization": token }
         });
-
         const name = res.data.name;
         const newMessages = res.data.messages;
         messageBox.innerHTML = '';
@@ -210,14 +213,14 @@ async function fetchAndStoreMessages() {
             addMessage(element.messages, element.name, name);
         }
 
-
     } catch (err) {
         console.log(err);
     }
 }
 
-// Fetch and store messages initially
-fetchAndStoreMessages();
+// Listen for new chat message
+socket.on('newChatMessage', messages => {
+    // Handle the received message
+    fetchAndStoreMessages();
+  });
 
-//Periodically fetch and store new messages
-setInterval(fetchAndStoreMessages, 1000);

@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
+const http = require('http');
+const socketIo = require('socket.io');
+const server = http.createServer(app);
 require('dotenv').config();
 const fs = require('fs');
-const cors = require('cors')
+const cors = require('cors');
 const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -16,14 +19,24 @@ const Membership = require('./models/menbership');
 const userRoute = require('./routes/user');
 const chatRoute = require('./routes/chat');
 const groupRoute = require('./routes/group-users');
-const chat = require('./models/chat');
-
 const accessLogStream = fs.createWriteStream('access.log', {flags: 'a'});
 
 app.use(helmet());
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(bodyparser.json());
 app.use(cors());
+
+const io = socketIo(server,  {
+  cors: {
+    origin: ['http://127.0.0.1:5500'],
+  },
+});
+io.on('connection', socket => {
+   socket.on('chatMessage', messages => {
+     io.emit('newChatMessage', messages)
+   })
+})
+
 app.use('/user', userRoute);
 app.use('/chat', chatRoute);
 app.use(groupRoute);
@@ -40,7 +53,7 @@ Group.belongsToMany(User, { through: Membership });
 sequelize
    .sync()
    .then(() => {
-    app.listen(3000);
+    server.listen(3000);
    })
    .catch((err) => {
     console.log(err);
