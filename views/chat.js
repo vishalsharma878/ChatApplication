@@ -15,6 +15,8 @@ function addGroups(id, name) {
     // Attach a click event listener to the list item
     list.addEventListener('click', async () => {
         const chatBlock = document.getElementById('chat-block');
+        const msg = document.getElementById('msg');
+        msg.style.display = 'none';
         const showUsersButton = document.getElementById('show-group-users');
         showUsersButton.style.display = 'block';
         chatBlock.style.display = 'block';
@@ -27,7 +29,6 @@ function addGroups(id, name) {
             const res = await axios.get(`http://13.235.76.75:3000/chat/get-chat/${Id}`, {
                 headers: { "Authorization": token }
             });
-            console.log(res);
             const name = res.data.name;
             const newMessages = res.data.messages;
             for (const element of newMessages) {
@@ -49,18 +50,18 @@ createGroup.addEventListener('click', async () => {
     const groupNameObj = {
         groupname
     };
-    if(groupname){
-    try {
-        const res = await axios.post('http://13.235.76.75:3000/chat/post-group', groupNameObj, { headers: { "Authorization": token } });
-        // Clear the input field
-        const group = res.data.group;
-        addGroups(group.id, group.groupname);
+    if (groupname) {
+        try {
+            const res = await axios.post('http://13.235.76.75:3000/chat/post-group', groupNameObj, { headers: { "Authorization": token } });
+            // Clear the input field
+            const group = res.data.group;
+            addGroups(group.id, group.groupname);
 
 
-    } catch (err) {
-        console.log(err);
+        } catch (err) {
+            console.log(err);
+        }
     }
- }
 })
 
 addUsers.addEventListener('click', async () => {
@@ -88,7 +89,7 @@ addUsers.addEventListener('click', async () => {
 // Function to send user details to the backend
 async function sendUserDetailsToBackend(userDetails) {
     try {
-        const groupId = localStorage.getItem('groupId'); 
+        const groupId = localStorage.getItem('groupId');
         const response = await axios.post('http://13.235.76.75:3000/chat/add-user', {
             groupId,
             userDetails,
@@ -130,38 +131,102 @@ const sentMessages = document.getElementById('sent-messages');
 
 function addMessage(message, name, currUserName) {
     const newMessage = document.createElement('div');
-    if (name == currUserName) {
+    if (name === currUserName) {
         newMessage.classList.add('sent', 'message-content');
-        newMessage.textContent = message;
-
-    }
-    else {
+      } else {
         newMessage.classList.add('received', 'message-content');
-        newMessage.textContent = name + ": " + message;
+        newMessage.textContent = name + ": ";
+      }
+  
+    const fileExtension = message.split('.').pop().toLowerCase();
+    const extensions = ['mp4', 'webm', 'ogg', 'mov', 'png', 'jpg', 'jpeg', 'gif','bmp', 'pdf', 'docx', 'csv'];
+  
+    // Create a download link for all types (video, image, PDF, etc.)
+    if (extensions.includes(fileExtension)) {
+      const p = document.createElement('p');
+      p.textContent = `.${fileExtension} file: `
+      const downloadLink = document.createElement('a');
+      downloadLink.href = message;
+      downloadLink.textContent = 'Download';
+      p.appendChild(downloadLink);
+      newMessage.appendChild(p);
+      if (name != currUserName) {
+        newMessage.style.outline= '2px solid black'
+        newMessage.style.width ='10%'
+        newMessage.style.margin = '7px'
+      }
+      
     }
+    else{
+        newMessage.textContent = message;
+    }
+  
     messageBox.appendChild(newMessage);
     newMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
-}
+  }
+  
+
+
+// JavaScript to handle file input selection and display selected files
+let selectedFile = null;
+const fileInput = document.getElementById('file-input');
+const chooseFileBtn = document.getElementById('choose-file-btn');
+const selectedFilesContainer = document.getElementById('selected-files');
+
+// Function to handle file selection
+fileInput.addEventListener('change', () => {
+    const files = fileInput.files;
+    selectedFilesContainer.innerHTML = ''; // Clear previous selections
+        selectedFile = files[0];
+        const fileItem = document.createElement('div');
+        fileItem.textContent = `Selected file: ${selectedFile.name}`;
+        selectedFilesContainer.appendChild(fileItem);
+    
+});
+
+
+chooseFileBtn.addEventListener('click', () => {
+    fileInput.click();
+});
+
 
 // Event listener for the Send button
 document.getElementById('send-button').addEventListener('click', async () => {
     const messageInput = document.getElementById('message-input');
     const messages = messageInput.value;
+    const groupId = localStorage.getItem('groupId');
     const messageObj = {
         messages
     }
+    if (messages) {
+        try {
 
-    try {
-        const groupId = localStorage.getItem('groupId');
-        
-        const res = await axios.post('http://13.235.76.75:3000/chat/post-chat', { messageObj, groupId }, { headers: { "Authorization": token } });
-        socket.emit('chatMessage', messages);
-        if (messages.trim() !== '') {
-            messageInput.value = ''; // Clear the input field
+            const res = await axios.post('http://13.235.76.75:3000/chat/post-chat', { messageObj, groupId }, { headers: { "Authorization": token } });
+            socket.emit('chatMessage', messages);
+            if (messages.trim() !== '') {
+                messageInput.value = ''; // Clear the input field
+            }
+        }
+        catch (err) {
+            console.log(err);
         }
     }
-    catch (err) {
-        console.log(err);
+
+    if (selectedFile) {
+        //FormData to send the file to the backend
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('groupId', groupId);
+
+        selectedFilesContainer.innerHTML = '';
+        axios.post('http://13.235.76.75:3000/chat/post-file', formData, { headers: { "Authorization": token } })
+            .then((response) => {
+                socket.emit('chatMessage', messages);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 });
 
@@ -200,9 +265,9 @@ document.getElementById('send-button').addEventListener('click', async () => {
 // let id = lastElement.id;
 async function fetchAndStoreMessages() {
     const Id = localStorage.getItem('groupId');
-    
+
     try {
-        
+
         const res = await axios.get(`http://13.235.76.75:3000/chat/get-chat/${Id}`, {
             headers: { "Authorization": token }
         });
@@ -222,5 +287,5 @@ async function fetchAndStoreMessages() {
 socket.on('newChatMessage', messages => {
     // Handle the received message
     fetchAndStoreMessages();
-  });
+});
 

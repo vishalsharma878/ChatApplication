@@ -33,11 +33,11 @@ body, ul, li {
 .group-list li {
     display: flex;
     align-items: center;
-    padding: 14px;
-    border-bottom: 1px solid #ddd; 
+    padding: 20px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
+    outline: 1px solid #ccc;
 }
 
 
@@ -108,7 +108,11 @@ body, ul, li {
     overflow-y: scroll;
     padding: 10px;
 }
-
+#msg{
+    text-align: center;
+    padding: 25%;
+    display: block;
+}
 .message {
     margin-bottom: 10px;
     padding: 5px;
@@ -126,7 +130,7 @@ body, ul, li {
 }
 
 .message-content {
-    padding: 7px;
+    padding: 5px;
 }
 
 .chat-input {
@@ -140,6 +144,7 @@ body, ul, li {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-left: 5px;
 }
 
 .chat-input button {

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat App</title>
     <link rel="stylesheet" href="chat.css">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
             <!-- List of groups -->
-            <button id="create-group">Create Group</button> 
+            <button id="create-group">Create Group</button>
             <h3 style="margin: 20px; ">Your Groups</h3>
             <ul id="group-list" class="group-list">
-            
+
             </ul>
         </div>
         <div class="chat">
@@ -24,23 +26,28 @@
                 <button id="show-group-users">Show Group Users</button>
             </div>
             <!-- Chat messages -->
-             <div id="chat-block" style="display: none;">
-            <div class="chat-messages" id="message-box">
-                
-                <div class="message received">
-                    <div class="message-content" id="received-messages">Hello!</div>
+            <h2 id="msg">To start a chat, click on an existing group or create a new group</h2>
+            <div id="chat-block" style="display: none;">
+                <div class="chat-messages" id="message-box">
+                    <div class="message received">
+                        <div class="message-content" id="received-messages"></div>
+                    </div>
+                    <div class="message sent">
+                        <div class="message-content" id="sent-messages"></div>
+                    </div>
+
                 </div>
-                <div class="message sent">
-                    <div class="message-content" id="sent-messages">Hi there!</div>
+                <!-- Chat input -->
+                <div class="chat-input">
+                    <input type="file" id="file-input" accept="*/*" style="display: none;" multiple>
+
+                    <button id="choose-file-btn">Choose File</button>
+
+                    <div id="selected-files"></div>
+                    <input type="text" id="message-input" placeholder="Type your message...">
+                    <button id="send-button">Send</button>
                 </div>
-                
             </div>
-            <!-- Chat input -->
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type your message...">
-                <button id="send-button">Send</button>
-            </div>
-        </div>
         </div>
 
         <div id="popup" class="popup">
@@ -52,11 +59,12 @@
                 <button id="close-popup">Close</button>
             </div>
         </div>
-        
+
     </div>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
-	<script src="chat.js"></script>
+    <script src="chat.js"></script>
     <script src="group-users.js"></script>
 </body>
+
 </html>

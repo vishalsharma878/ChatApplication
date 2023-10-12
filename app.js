@@ -9,6 +9,7 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const multer = require('multer');
 
 const sequelize = require('./utils/database');
 const User = require('./models/user');
