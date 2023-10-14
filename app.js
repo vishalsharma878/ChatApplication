@@ -9,13 +9,13 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const multer = require('multer');
 
 const sequelize = require('./utils/database');
 const User = require('./models/user');
 const Messages = require('./models/chat');
 const Group = require('./models/group');
 const Membership = require('./models/menbership');
+const job = require("./cron-job/job");
 
 const userRoute = require('./routes/user');
 const chatRoute = require('./routes/chat');
@@ -29,7 +29,7 @@ app.use(cors());
 
 const io = socketIo(server,  {
   cors: {
-    origin: ['http://127.0.0.1:5500'],
+    origin: ['http://13.235.76.75:3000'],
   },
 });
 io.on('connection', socket => {
@@ -50,6 +50,8 @@ Messages.belongsTo(Group);
 
 User.belongsToMany(Group, { through: Membership });
 Group.belongsToMany(User, { through: Membership });
+
+job.start();
 
 sequelize
    .sync()

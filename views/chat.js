@@ -71,7 +71,7 @@ addUsers.addEventListener('click', async () => {
     });
     const isAdmin = res.data.isAdmin;
     if (isAdmin) {
-        const userDetailInput = prompt('Enter user details (comma-separated):');
+        const userDetailInput = prompt('Enter user email (comma-separated):');
 
         if (userDetailInput) {
             // Split the user details by comma to get an array of details

@@ -1,6 +1,6 @@
 const Groups = require('../models/group');
 const User = require('../models/user');
-const UserGroup = require('../models/menbership');
+const Membership = require('../models/menbership');
 
 
 const getGroupUsers = async (req, res) => {
@@ -30,7 +30,7 @@ const removeUserFromGroup = async (req, res) => {
   try {
 
     // Check if the user who is making the change is an admin
-    const isAdmin = await UserGroup.findOne({
+    const isAdmin = await Membership.findOne({
       where: {
         groupId,
         userId: req.user.id,
@@ -41,7 +41,7 @@ const removeUserFromGroup = async (req, res) => {
       return res.status(403).json({ message: 'You do not have permission to perform this action.' });
     }
 
-    await UserGroup.destroy({ where: { groupId: groupId, userId: userId } });
+    await Membership.destroy({ where: { groupId: groupId, userId: userId } });
 
     return res.status(200).json({ message: 'User removed from the group successfully.' });
   } catch (error) {
@@ -55,7 +55,7 @@ const makeUserAdmin = async (req, res) => {
   const userId = req.params.userId;
   try {
     // Check if the user who is making the change is an admin
-    const isAdmin = await UserGroup.findOne({
+    const isAdmin = await Membership.findOne({
       where: {
         groupId,
         userId: req.user.id,
@@ -67,7 +67,7 @@ const makeUserAdmin = async (req, res) => {
       return res.status(403).json({ message: 'You do not have permission to perform this action.' });
     }
 
-    await UserGroup.update(
+    await Membership.update(
       { isAdmin: true },
       {
         where: {
